@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Certificate of Participation</title>
+        <style>
+            body {
+                font-family: "Georgia", serif;
+                margin: 0;
+                padding: 40px;
+                background: #f8f9fa;
+            }
+            .certificate {
+                width: 800px;
+                height: 600px;
+                margin: 0 auto;
+                background: white;
+                border: 2px solid #d4a574;
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            }
+            .certificate::before {
+                content: "";
+                position: absolute;
+                top: 20px;
+                left: 20px;
+                right: 20px;
+                bottom: 20px;
+                border: 1px solid #d4a574;
+                border-radius: 5px;
+            }
+            .ornament {
+                position: absolute;
+                top: 40px;
+                font-size: 24px;
+                color: #d4a574;
+            }
+            .title {
+                font-size: 44px;
+                color: #2c3e50;
+                margin-bottom: 10px;
+                font-weight: normal;
+            }
+            .subtitle {
+                font-size: 18px;
+                color: #d4a574;
+                margin-bottom: 50px;
+                font-style: italic;
+                letter-spacing: 4px;
+            }
+            .text {
+                font-size: 20px;
+                color: #34495e;
+                margin: 10px 0;
+            }
+            .participant {
+                font-size: 30px;
+                color: #2c3e50;
+                margin: 25px 0;
+                font-weight: bold;
+                border-bottom: 2px solid #d4a574;
+                padding-bottom: 5px;
+            }
+            .event {
+                font-size: 26px;
+                color: #2c3e50;
+                margin: 25px 0;
+                font-style: italic;
+            }
+            .dates {
+                font-size: 16px;
+                color: #7f8c8d;
+                margin: 20px 0;
+            }
+            .footer {
+                position: absolute;
+                bottom: 50px;
+                font-size: 12px;
+                color: #95a5a6;
+            }
+            .logo {
+                position: absolute;
+                top: 40px;
+                right: 40px;
+                max-height: 80px;
+                max-width: 120px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="certificate">
+            {{if .LogoURL}}<img
+                src="{{.LogoURL}}"
+                alt="Logo"
+                class="logo"
+            />{{end}}
+            <div class="ornament">❦</div>
+            <div class="title">Certificate</div>
+            <div class="subtitle">~ of participation ~</div>
+            <div class="text">This is to certify that</div>
+            <div class="participant">{{.ParticipantName}}</div>
+            <div class="text">has participated with distinction in</div>
+            <div class="event">{{.EventName}}</div>
+            <div class="dates">held from {{.StartDate}} to {{.EndDate}}</div>
+            <div class="footer">Generated on {{.GeneratedDate}}</div>
+        </div>
+    </body>
+</html>

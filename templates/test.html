@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Certificate</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 40px;
+            background: #f5f5f5;
+        }
+        .certificate {
+            width: 800px;
+            height: 600px;
+            margin: 0 auto;
+            background: white;
+            border: 8px solid #c19b76;
+            border-radius: 15px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .title { font-size: 48px; color: #2c3e50; margin-bottom: 30px; font-weight: bold; }
+        .participant { font-size: 36px; color: #c19b76; margin: 20px 0; }
+        .event { font-size: 28px; color: #2c3e50; margin: 20px 0; }
+        .dates { font-size: 18px; color: #7f8c8d; margin: 15px 0; }
+    </style>
+</head>
+<body>
+    <div class="certificate">
+        <div class="title">TEST CERTIFICATE</div>
+        <div>Participant: {{.ParticipantName}}</div>
+        <div>Event: {{.EventName}}</div>
+        <div>Dates: {{.StartDate}} - {{.EndDate}}</div>
+        <div>Generated: {{.GeneratedDate}}</div>
+        <div>Logo URL: {{.LogoURL}}</div>
+        <div>Cert ID: {{.CertificateID}}</div>
+    </div>
+</body>
+</html>
