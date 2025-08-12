@@ -13,13 +13,16 @@ import (
 var templateFS embed.FS
 
 type CertificateData struct {
-	EventName       string
-	StartDate       string
-	EndDate         string
-	ParticipantName string
-	LogoURL         string
-	GeneratedDate   string
-	CertificateID   string
+	EventName            string
+	StartDate            string
+	EndDate              string
+	ParticipantName      string
+	LogoURL              string
+	GeneratedDate        string
+	CertificateID        string
+	CertificateType      string // e.g. Presenter, Sponsor, Participant
+	RecognitionStatement string
+	ReceiverRole         string
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
@@ -59,6 +62,37 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
             <input type="text" name="participant_name" required>
         </div>
         <div class="form-group">
+            <label>Certificate Type:</label>
+            <select name="participant_type">
+                <optgroup label="Participation">
+                    <option value="attendee">Attendee</option>
+                    <option value="delegate">Delegate</option>
+                    <option value="participant" selected>Participant</option>
+                </optgroup>
+                <optgroup label="Contribution">
+                    <option value="speaker">Speaker</option>
+                    <option value="presenter">Presenter</option>
+                    <option value="panelist">Panelist</option>
+                    <option value="moderator">Moderator</option>
+                    <option value="instructor">Instructor</option>
+                    <option value="facilitator">Workshop Facilitator</option>
+                </optgroup>
+                <optgroup label="Support">
+                    <option value="sponsor">Sponsor</option>
+                    <option value="partner">Partner</option>
+                    <option value="exhibitor">Exhibitor</option>
+                    <option value="patron">Patron</option>
+                </optgroup>
+                <optgroup label="Organization">
+                    <option value="organizer">Organizer</option>
+                    <option value="volunteer">Volunteer</option>
+                    <option value="committee">Committee Member</option>
+                    <option value="judge">Judge</option>
+                    <option value="chair">Chair</option>
+                </optgroup>
+            </select>
+        </div>
+        <div class="form-group">
             <label>Logo URL (optional):</label>
             <input type="url" name="logo_url" placeholder="https://example.com/logo.png">
         </div>
@@ -80,6 +114,108 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(html))
 }
 
+func getReceiverRole(certificateType string) string {
+	switch strings.ToLower(certificateType) {
+	// Contribution categories
+	case "speaker":
+		return "Speaker"
+	case "presenter":
+		return "Presenter"
+	case "panelist":
+		return "Panelist"
+	case "moderator":
+		return "Moderator"
+	case "instructor":
+		return "Instructor"
+	case "facilitator":
+		return "Workshop Facilitator"
+
+	// Support categories
+	case "sponsor":
+		return "Sponsor"
+	case "partner":
+		return "Partner Organization"
+	case "exhibitor":
+		return "Exhibitor"
+	case "patron":
+		return "Patron"
+
+	// Organizing categories
+	case "organizer":
+		return "Event Organizer"
+	case "volunteer":
+		return "Volunteer"
+	case "committee":
+		return "Committee Member"
+	case "judge":
+		return "Judge"
+	case "chair":
+		return "Chair"
+
+	// Participation categories
+	case "attendee":
+		return "Attendee"
+	case "delegate":
+		return "Delegate"
+	case "participant":
+		return "Participant"
+
+	default:
+		return "Participant"
+	}
+}
+
+func getRecognitionStatement(certificateType string) string {
+	switch strings.ToLower(certificateType) {
+	// Contribution categories
+	case "speaker":
+		return "for delivering an exceptional presentation and sharing valuable insights in the"
+	case "presenter":
+		return "for presenting important work and contributing to knowledge exchange in the"
+	case "panelist":
+		return "for providing expert perspectives as a discussion panelist in the"
+	case "moderator":
+		return "for skillfully moderating discussions and facilitating engagement in the"
+	case "instructor":
+		return "for instructing an educational session with expertise and dedication in the"
+	case "facilitator":
+		return "for facilitating an engaging and productive workshop in the"
+
+	// Support categories
+	case "sponsor":
+		return "for generously supporting and making this event possible"
+	case "partner":
+		return "for valuable partnership and collaboration in delivering this event"
+	case "exhibitor":
+		return "for participating as an exhibitor and enriching the event experience"
+	case "patron":
+		return "for distinguished patronage and support of this event"
+
+	// Organizing categories
+	case "organizer":
+		return "for outstanding contributions to organizing and executing this event"
+	case "volunteer":
+		return "for dedicated volunteer service that helped make this event successful"
+	case "committee":
+		return "for diligent service as a committee member"
+	case "judge":
+		return "for providing expert evaluation and judgment"
+	case "chair":
+		return "for leadership and guidance as a chair"
+
+	// Participation categories
+	case "attendee":
+		return "for active attendance and participation"
+	case "delegate":
+		return "for representing their organization as an official delegate"
+	case "participant":
+		return "for meaningful participation and engagement"
+
+	default:
+		return "for participating in"
+	}
+}
+
 func generateHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -87,18 +223,28 @@ func generateHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := CertificateData{
-		EventName:       r.FormValue("event_name"),
-		StartDate:       formatDate(r.FormValue("start_date")),
-		EndDate:         formatDate(r.FormValue("end_date")),
-		ParticipantName: r.FormValue("participant_name"),
-		LogoURL:         r.FormValue("logo_url"),
-		GeneratedDate:   time.Now().Format("January 2, 2006"),
-		CertificateID:   generateCertificateID(),
+		EventName:            r.FormValue("event_name"),
+		StartDate:            formatDate(r.FormValue("start_date")),
+		EndDate:              formatDate(r.FormValue("end_date")),
+		ParticipantName:      r.FormValue("participant_name"),
+		LogoURL:              r.FormValue("logo_url"),
+		GeneratedDate:        time.Now().Format("January 2, 2006"),
+		CertificateID:        generateCertificateID(),
+		CertificateType:      r.FormValue("participant_type"),
+		ReceiverRole:         getReceiverRole(r.FormValue("participant_type")),
+		RecognitionStatement: getRecognitionStatement(r.FormValue("participant_type")),
 	}
 
 	templateName := r.FormValue("template")
 	if templateName == "" {
 		templateName = "classic"
+	}
+
+	// Ensure default value if not specified
+	if data.CertificateType == "" {
+		data.CertificateType = "participant"
+		data.ReceiverRole = "Participant"
+		data.RecognitionStatement = getRecognitionStatement("participant")
 	}
 
 	tmpl := getTemplate(templateName)
@@ -146,9 +292,7 @@ func generateHandler(w http.ResponseWriter, r *http.Request) {
     <div class="download-bar">
         <button class="download-btn" onclick="window.print()">Print Certificate</button>
     </div>
-    <div class="certificate-container">
 ` + certificate + `
-    </div>
 </body>
 </html>`
 
@@ -203,8 +347,6 @@ func getAvailableTemplates() []string {
 	return templates
 }
 
-
-
 func downloadHandler(w http.ResponseWriter, r *http.Request) {
 	data := CertificateData{
 		EventName:       r.URL.Query().Get("event_name"),
@@ -234,7 +376,6 @@ func downloadHandler(w http.ResponseWriter, r *http.Request) {
 func generateCertificateID() string {
 	return "CERT-" + time.Now().Format("20060102") + "-" + time.Now().Format("150405")
 }
-
 
 func main() {
 	http.HandleFunc("/", homeHandler)

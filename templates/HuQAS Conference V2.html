@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HuQAS Conference Certificate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Monte+Carlo&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @page {
+        size: A4 landscape;
+        margin: 0;
+      }
+
+      body {
+        font-family: "Monte Carlo", cursive;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+      }
+
+      .certificate-container {
+        width: 297mm;
+        height: 210mm;
+        background-color: #ffffff;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        box-sizing: border-box;
+        padding: 40px 50px;
+      }
+
+      .certificate-border {
+        position: absolute;
+        top: 5.29mm;
+        left: 5.29mm;
+        right: 5.29mm;
+        bottom: 5.29mm;
+        border: 2px solid #7e287b;
+      }
+
+      .certificate-header {
+        margin-bottom: 2.65mm;
+        z-index: 10;
+        position: relative;
+      }
+
+      .logo-image {
+        max-width: 52.92mm;
+        height: auto;
+      }
+
+      .org-title {
+        font-size: 36px;
+        color: #7e287b;
+        font-weight: bold;
+        margin: 0;
+      }
+
+      .certificate-body {
+        z-index: 10;
+        position: relative;
+        text-align: center;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .certificate-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: #444;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin: 20px 0;
+      }
+
+      .participant-name {
+        font-family: "Libre Baskerville", serif;
+        font-size: 48px;
+        color: #7e287b;
+        margin: 15px 0;
+        padding-bottom: 5px;
+        font-weight: bold;
+      }
+
+      .event-name {
+        font-size: 20px;
+        font-weight: bold;
+        color: #231f54;
+        margin: 15px 0;
+      }
+
+      .event-description {
+        font-size: 16px;
+        color: #666;
+        margin: 10px 0;
+        line-height: 1.5;
+      }
+
+      .certificate-footer {
+        margin-top: auto;
+        z-index: 10;
+        position: relative;
+        width: 100%;
+      }
+
+      .signature-section {
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-end;
+        width: 100%;
+        margin-bottom: 15px;
+      }
+
+      .signature-item {
+        text-align: center;
+        width: 45%;
+      }
+
+      .signature-line {
+        border-bottom: 1px solid #999;
+        margin-bottom: 5px;
+        height: 30px;
+      }
+
+      .signature-item .name {
+        font-size: 14px;
+        color: #333;
+        font-weight: bold;
+      }
+
+      .signature-item .title {
+        font-size: 12px;
+        color: #555;
+      }
+
+      .certificate-meta {
+        font-size: 12px;
+        color: #888;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+      }
+
+      .receiver-role {
+        font-size: 18px;
+        color: #231f54;
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="certificate-container">
+      <div class="certificate-border"></div>
+      <header class="certificate-header">
+        <div>
+          {{if .LogoURL}}
+          <img src="{{.LogoURL}}" alt="Organization Logo" class="logo-image" />
+          {{else}}
+          <h1 class="org-title">Conference Certificate</h1>
+          {{end}}
+        </div>
+      </header>
+
+      <main class="certificate-body">
+        <!-- Certificate Title Based on Category -->
+        {{if eq .CertificateType "speaker"}}
+        <p class="certificate-title">Certificate of Speaking</p>
+        {{else if eq .CertificateType "presenter"}}
+        <p class="certificate-title">Certificate of Presentation</p>
+        {{else if eq .CertificateType "panelist"}}
+        <p class="certificate-title">Certificate of Panel Participation</p>
+        {{else if eq .CertificateType "moderator"}}
+        <p class="certificate-title">Certificate of Moderation</p>
+        {{else if eq .CertificateType "instructor"}}
+        <p class="certificate-title">Certificate of Instruction</p>
+        {{else if eq .CertificateType "facilitator"}}
+        <p class="certificate-title">Certificate of Facilitation</p>
+        {{else if eq .CertificateType "sponsor"}}
+        <p class="certificate-title">Certificate of Sponsorship</p>
+        {{else if eq .CertificateType "partner"}}
+        <p class="certificate-title">Certificate of Partnership</p>
+        {{else if eq .CertificateType "exhibitor"}}
+        <p class="certificate-title">Certificate of Exhibition</p>
+        {{else if eq .CertificateType "patron"}}
+        <p class="certificate-title">Certificate of Patronage</p>
+        {{else if eq .CertificateType "organizer"}}
+        <p class="certificate-title">Certificate of Organization</p>
+        {{else if eq .CertificateType "volunteer"}}
+        <p class="certificate-title">Certificate of Volunteering</p>
+        {{else if eq .CertificateType "committee"}}
+        <p class="certificate-title">Certificate of Committee Service</p>
+        {{else if eq .CertificateType "judge"}}
+        <p class="certificate-title">Certificate of Judging</p>
+        {{else if eq .CertificateType "chair"}}
+        <p class="certificate-title">Certificate of Chairmanship</p>
+        {{else if eq .CertificateType "attendee"}}
+        <p class="certificate-title">Certificate of Attendance</p>
+        {{else if eq .CertificateType "delegate"}}
+        <p class="certificate-title">Certificate of Delegation</p>
+        {{else}}
+        <p class="certificate-title">Certificate of Participation</p>
+        {{end}}
+
+        <p class="event-description">This certificate is hereby awarded to</p>
+        <h2 class="participant-name"><em>{{.ParticipantName}}</em></h2>
+
+        <!-- Display the receiver role from our data -->
+        <p class="receiver-role">{{.ReceiverRole}}</p>
+
+        <!-- Display the recognition statement -->
+        <p class="event-description">{{.RecognitionStatement}}</p>
+
+        <h3 class="event-name">{{.EventName}}</h3>
+        <p class="event-description">
+          held from <strong>{{.StartDate}}</strong> to
+          <strong>{{.EndDate}}</strong>
+        </p>
+      </main>
+
+      <footer class="certificate-footer">
+        <div class="signature-section">
+          <div class="signature-item">
+            <div class="signature-line"></div>
+            <div class="name">CEO</div>
+            <div class="title">Chief Executive Officer</div>
+          </div>
+        </div>
+        <div class="certificate-meta">
+          <span>Date Issued: {{.GeneratedDate}}</span>
+          <span>Certificate ID: {{.CertificateID}}</span>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

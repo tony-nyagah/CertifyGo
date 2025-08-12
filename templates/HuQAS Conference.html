@@ -9,8 +9,14 @@
       rel="stylesheet"
     />
     <style>
+      @page {
+        size: A4 landscape;
+        margin: 0;
+      }
+
       body {
-        font-family: "Libre Baskerville", serif;
+        font-family: "Monte Carlo", cursive;
+
         background-color: #f0f2f5;
         display: flex;
         justify-content: center;
@@ -20,8 +26,8 @@
       }
 
       .certificate-container {
-        width: 800px;
-        height: 600px;
+        width: 297mm;
+        height: 210mm;
         background-color: #ffffff;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         position: relative;
@@ -35,10 +41,10 @@
 
       .certificate-border {
         position: absolute;
-        top: 20px;
-        left: 20px;
-        right: 20px;
-        bottom: 20px;
+        top: 5.29mm;
+        left: 5.29mm;
+        right: 5.29mm;
+        bottom: 5.29mm;
         border: 2px solid #7e287b;
         z-index: 1;
       }
@@ -51,6 +57,10 @@
         text-align: center;
         color: #333;
         width: 100%;
+      }
+
+      .certificate-body {
+        margin: 5.29mm 0;
       }
 
       .logo-container {
@@ -75,11 +85,11 @@
         color: #444;
         text-transform: uppercase;
         letter-spacing: 2px;
-        margin: 20px 0;
+        margin: 5.29mm 0;
       }
 
       .participant-name {
-        font-family: "Monte Carlo", cursive;
+        font-family: "Libre Baskerville", serif;
         font-size: 48px;
         color: #7e287b;
         margin: 15px 0;
@@ -88,7 +98,7 @@
       }
 
       .event-name {
-        font-size: 20px;
+        font-size: 5.29mm;
         font-weight: bold;
         color: #231f54;
         margin: 15px 0;
